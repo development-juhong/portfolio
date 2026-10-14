@@ -6,7 +6,7 @@
 
 ## Design
 
-서버는 opaque refresh token 원문 대신 SHA-256 hash를 저장합니다. refresh 시 현재 hash를 조건부 UPDATE로 교체합니다. 같은 옛 토큰과 같은 `requestId`의 제한된 재시도는 이전 회전 슬롯이 남아 있을 때 재수용하고, 다른 `requestId`의 재사용은 `AUTH_REFRESH_REPLAY`로 거절합니다. 이 거절만으로 활성 세션을 자동 철회하지는 않습니다. Source: `ClientAuthSessionService`, `SessionRevocationService`, `WsFrameGate`.
+서버는 opaque refresh token 원문 대신 SHA-256 hash를 저장합니다. refresh 시 현재 hash를 조건부 UPDATE로 교체합니다. 같은 옛 토큰과 같은 `requestId`의 제한된 재시도는 이전 회전 슬롯이 남아 있을 때 HMAC으로 같은 새 토큰을 재생성해 수용합니다. 다른 `requestId`의 재사용은 `AUTH_REFRESH_REPLAY`로 거절하지만, 이 거절만으로 활성 세션을 자동 철회하지는 않습니다. Source: `ClientAuthSessionService`, `SessionRevocationService`, `WsFrameGate`.
 
 ## Transaction
 
@@ -24,8 +24,8 @@ refresh 회전의 UPDATE는 현재 hash·미철회·미만료·revision 일치�
 
 ## Test
 
-- **PASS:** `NativeUserCreateTxTest` 13개, `SessionRevocationTest` 11개, `WsFrameGateTest` 5개, 총 29개. 사용자 생성 Transaction 문맥, 철회 판단, WebSocket frame gate의 revision·TTL·조회 실패 처리를 단위 테스트에서 확인했습니다.
-- **NOT_RUN:** `ClientAuthSessionServicePgIntegrationTest`. 실제 PostgreSQL의 refresh rotation 경합은 이번 실행에서 검증하지 못했습니다.
+- **Unit Test PASS:** `NativeUserCreateTxTest` 13개, `SessionRevocationTest` 11개, `WsFrameGateTest` 5개, 총 29개. 사용자 생성 Transaction 문맥, 철회 판단, WebSocket frame gate의 revision·TTL·조회 실패 처리를 확인했습니다.
+- **PostgreSQL Integration Test PASS (2026-10-13):** `ClientAuthSessionServicePgIntegrationTest` 13개. 격리된 PostgreSQL에서 refresh token hash 저장, rotation, 동일 requestId 재시도, 다른 requestId 재사용 거절, 동시 회전 1승, revoke와 access_revision 전이를 확인했습니다.
 
 ## Limitations
 

@@ -42,6 +42,8 @@ erDiagram
 ```mermaid
 erDiagram
     mail_account ||--o{ mail_message : "sender_account_id"
+    mail_account ||--o{ mail_mailbox_entry : "account_id"
+    mail_account ||--o{ mail_recipient : "recipient_account_id"
     mail_message ||--o{ mail_recipient : "message_id"
     mail_message ||--o{ mail_mailbox_entry : "message_id"
     mail_message ||--o{ mail_attachment : "message_id"
@@ -58,4 +60,4 @@ erDiagram
 
 `V1__sroyio_v1_baseline.sql`, `V10__meeting_calendar_notification_lifecycle.sql`, `V20__channel_record_logical_delete.sql`, `V21__channel_artifact_maintenance.sql`, `V22__notification_delivery_outbox.sql`, `V23__internal_mail_core.sql`, `V25__identity_access_revision.sql`, `V36__notification_delivery_attempt.sql`, `V45__msg_message_revision_send_hash.sql`.
 
-PostgreSQL Integration Test는 이번 검증에서 NOT_RUN입니다. Index의 처리 시간 개선은 측정하지 않았습니다.
+격리된 PostgreSQL의 Integration Test 10개 Class·61개 Test가 PASS했습니다. 별도 Concurrency Regression Test 3개(Messenger 2개, Collaboration 1개)는 61개 집계와 구분합니다. 각 제약·경합의 검증 범위는 Case Study에 표시했으며, Index의 처리 시간 개선은 측정하지 않았습니다.

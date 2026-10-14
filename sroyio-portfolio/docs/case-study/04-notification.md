@@ -10,7 +10,7 @@
 
 ## Transaction
 
-회의 알림의 원본 생성과 delivery 등록은 같은 DB Transaction에 둡니다. WebSocket I/O는 Worker의 별도 처리입니다. Mail Entry는 발송 DB commit 후 `notification_pending`을 가진 Entry를 별도 worker가 delivery로 등록합니다. 따라서 메일 발송 결과와 알림 전달 결과는 분리됩니다.
+회의 알림의 원본 생성과 delivery 등록은 같은 DB Transaction에 둡니다. 시작 임박 알림은 기존 polling 대상이라 이 전달 경로에서 제외합니다. WebSocket I/O는 Worker의 별도 처리입니다. Mail Entry는 발송 DB commit 후 `notification_pending`을 가진 Entry를 별도 worker가 delivery로 등록합니다. 따라서 메일 발송 결과와 알림 전달 결과는 분리됩니다.
 
 ## DB / Constraint / Index
 
@@ -26,8 +26,8 @@
 
 ## Test
 
-- **PASS:** `NotificationDeliveryWorkerTest` 6개. 성공, 오프라인 재시도 요청, 전송 예외의 UNKNOWN, lease 상실, source access 상실, 재시작 복구 호출 순서를 Mock 기반으로 확인했습니다.
-- **NOT_RUN:** `NotificationDeliveryPostgresTest`, `NotificationDeliveryAttemptPgTest`, `InboxItemStatePgTest`. 실제 PostgreSQL의 동시 Worker 선점·lease 복구·시도 이력·Inbox 상태 변경은 이번 실행에서 확인하지 못했습니다.
+- **Unit Test PASS:** `NotificationDeliveryWorkerTest` 6개. 성공, 오프라인 재시도 요청, 전송 예외의 UNKNOWN, lease 상실, source access 상실, 재시작 복구 호출 순서를 Mock 기반으로 확인했습니다.
+- **PostgreSQL Integration Test PASS (2026-10-13):** `NotificationDeliveryPostgresTest` 9개, `NotificationDeliveryAttemptPgTest` 3개, `InboxItemStatePgTest` 3개. 격리된 PostgreSQL에서 동시 Worker의 단일 선점, lease 만료·복구, UNKNOWN·시도 이력, Inbox 상태 변경을 확인했습니다.
 
 ## Limitations
 

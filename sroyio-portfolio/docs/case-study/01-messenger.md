@@ -23,9 +23,10 @@
 
 ## Test
 
-- **PASS:** `MessengerServiceTest` 81개, `MessengerTxBoundaryTest` 24개. 동일 키·다른 payload 충돌, 다른 방 부모 거절, 전송 Transaction 경계와 실패 전파를 확인했습니다.
-- **NOT_RUN:** `MessengerJdbcRepositoryPgIntegrationTest`. 실제 PostgreSQL의 부분 Unique Index 충돌과 동시 잠금 경합을 이번 실행에서 확인하지 못했습니다.
+- **Unit Test PASS:** `MessengerServiceTest` 81개, `MessengerTxBoundaryTest` 24개. 동일 키·다른 payload 충돌, 다른 방 부모 거절, 전송 Transaction 경계와 실패 전파를 확인했습니다.
+- **PostgreSQL Integration Test PASS (2026-10-13):** `MessengerJdbcRepositoryPgIntegrationTest` 8개. 격리된 PostgreSQL에서 동일 `clientMsgId`의 순차 재전송 멱등성과 부분 Unique Index를 사용하는 Repository SQL 동작을 확인했습니다.
+- **별도 Concurrency Regression Test PASS (2026-10-13):** `MessengerConcurrencyPostgresTest` 2개. 동일 요청 8 threads × 10회(80 requests)는 회차마다 메시지 1건·중복 row 0건이었습니다. 서로 다른 발신자 3명 × 경로별 20회(120 requests)는 Service Transaction 경로와 참여자 잠금 SQL 경로에서 deadlock·timeout·부분 반영이 없었습니다. 기존 PostgreSQL Integration Test 61개 집계와 분리합니다.
 
 ## Limitations
 
-일반 REST 전송의 비방송은 Controller의 호출 순서로 확인했습니다. 전용 롤백 방송 Test는 현재 PASS 범위에 없습니다. 과거 deadlock 수정 기록을 현재 성능 향상 수치로 사용하지 않습니다.
+일반 REST 전송의 비방송은 Controller의 호출 순서로 확인했습니다. 전용 롤백 방송 Test는 현재 PASS 범위에 없습니다. 별도 Concurrency Regression Test는 과거의 발신자별 잠금 대상 차이를 재현하지만, 당시의 정확한 부하 수치나 운영 환경을 재현한 것은 아닙니다. 과거 수정 기록을 현재 성능 향상 수치로 사용하지 않습니다.

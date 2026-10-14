@@ -24,8 +24,8 @@ Sroyio 내부 메일은 메시지 한 행만 저장하면 발송이 끝나지 �
 
 ## Test
 
-- **PASS:** `InternalMailRoutingTest` 6개. 내부·외부 메일 경로 선택을 단위 테스트에서 확인했습니다.
-- **NOT_RUN:** `InternalMailCorePostgresTest`, `InternalMailAccountPostgresTest`. 발송 원자성, 동시 멱등성, BCC DB 격리, rollback, 계정 lifecycle의 PostgreSQL 동작은 이번 PASS 범위에 없습니다.
+- **Unit Test PASS:** `InternalMailRoutingTest` 6개. 내부·외부 메일 경로 선택을 확인했습니다.
+- **PostgreSQL Integration Test PASS (2026-10-13):** `InternalMailCorePostgresTest` 8개, `InternalMailAccountPostgresTest` 6개. 격리된 PostgreSQL에서 발송 원자성, 동시 idempotency, BCC별 수신함 기록, rollback, 계정 생성 경합과 잠금 처리를 확인했습니다.
 
 ## Limitations
 

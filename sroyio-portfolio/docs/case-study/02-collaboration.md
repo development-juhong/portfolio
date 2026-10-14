@@ -24,8 +24,9 @@
 
 ## Test
 
-- **PASS:** `ChannelTabDeleteTest` 4개. Rule 정리 실패, DB 실패 전파, 커밋 전 성공 방송 방지 등을 단위 테스트에서 확인했습니다.
-- **NOT_RUN:** `ChannelTabDeletePostgresTest`, `ChannelArtifactLifecyclePostgresTest`, `ChannelRecordLifecyclePostgresTest`. 실제 PostgreSQL의 FK·rollback·복원 경합 결과는 이번 실행의 검증 범위가 아닙니다.
+- **Unit Test PASS:** `ChannelTabDeleteTest` 4개. Rule 정리 실패, DB 실패 전파, 커밋 전 성공 방송 방지 등을 단위 테스트에서 확인했습니다.
+- **PostgreSQL Integration Test PASS (2026-10-13):** `ChannelTabDeletePostgresTest` 기존 6개, `ChannelArtifactLifecyclePostgresTest` 3개, `ChannelRecordLifecyclePostgresTest` 2개. 격리된 PostgreSQL에서 FK 삭제 순서·rollback, 산출물·기록 복원과 동시 경합을 확인했습니다.
+- **별도 Concurrency Regression Test PASS (2026-10-14):** `ChannelTabDeletePostgresTest.concurrentRunBeginPreventsTabDelete` 1개. 실행 시작이 Rule 행 잠금을 먼저 얻은 경우, Tab 삭제가 RUNNING 작업을 확인해 `WORKFLOW_RUNNING`으로 거절하고 Tab·Rule·Run을 유지하는지 확인했습니다. 정확한 운영 부하를 재현한 테스트는 아닙니다.
 
 ## Limitations
 
