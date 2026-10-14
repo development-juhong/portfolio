@@ -2,13 +2,13 @@
 
 ## 범위
 
-이 문서는 현재 Sroyio의 주요 실행 경계와 다섯 Case Study의 상태 소유자를 요약합니다. Handy/GW와 외부 메일 제공자는 Sroyio가 소유하지 않는 연동 경계입니다.
+이 문서는 Standalone Sroyio의 기본 실행 경계와 다섯 Case Study의 상태 소유자를 요약합니다. 기본 실행에서 GW Integration은 OFF이고, 로그인은 Sroyio 자체 사용자·세션을 사용합니다. Handy/GW와 외부 메일 제공자는 Sroyio가 소유하지 않는 선택적 연동 경계입니다.
 
 ```mermaid
 flowchart TD
-    Client["Electron Client"] -->|"HTTP / WebSocket"| Server["Spring Boot Server: core · gw · app"]
+    Client["Electron Client"] -->|"HTTP / WebSocket"| Server["Spring Boot Server: core · capability-api · app"]
     Server -->|"JDBC / MyBatis"| DB[("Main PostgreSQL")]
-    Server -->|"gw 연동 경계"| GW["Handy/GW 외부 계약"]
+    Server -.->|"선택적 Adapter"| External["Groupware / Mail 등 외부 시스템"]
 ```
 
 Flyway는 Main PostgreSQL Schema Migration에 사용합니다.
@@ -18,7 +18,8 @@ Flyway는 Main PostgreSQL Schema Migration에 사용합니다.
 | Client | 화면·사용자 입력과 Server 호출 | Electron Client, esbuild 설정 |
 | Server `app` | Messenger, Collaboration, Auth, Notification, Internal Mail의 요청·도메인 처리 | 각 Case Study의 Service·Repository |
 | Server `core` | 공통 신원·권한 및 기반 기능 | UserIdentityService 등 |
-| Server `gw` | Handy/GW 연동 경계 | Server 모듈 구성 |
+| Server `capability-api` | 외부 기능 호출에 쓰는 공통 계약 | 공개 Source의 `capability-api` 모듈 |
+| 선택적 연동 | Groupware/Handy 등 외부 계약 | Server `gw` 모듈과 선택적 SSO 티켓·Client Handy 로그인 코드는 공개 스냅샷에서 제외 |
 | Main PostgreSQL | 세션·메시지·협업·알림·내부 메일의 권위 있는 상태 | V1 및 후속 Flyway Migration |
 
 ## 데이터와 실패 경계

@@ -1,6 +1,6 @@
 # ERD 개요
 
-다섯 Case Study에 직접 관련된 테이블과 FK만 발췌했습니다. 전체 운영 Schema를 재현한 문서가 아닙니다. 선은 Migration에서 확인한 FK를 뜻하며, 사용자 ID 스냅샷이나 다형성 source 참조처럼 FK가 없는 연결은 선으로 그리지 않았습니다.
+다섯 Case Study에 직접 관련된 Sroyio PostgreSQL 테이블과 FK만 발췌했습니다. 기본 사용자·세션 원장은 `app_user`와 `client_auth_session`이며, 외부 Groupware DB나 identity mapping은 Standalone 실행의 필수 요소가 아닙니다. 전체 운영 Schema를 재현한 문서가 아닙니다. 선은 Migration에서 확인한 FK를 뜻하며, 사용자 ID 스냅샷이나 다형성 source 참조처럼 FK가 없는 연결은 선으로 그리지 않았습니다.
 
 ## Messenger · Collaboration
 
