@@ -1,5 +1,7 @@
 # Notification
 
+**Source Code:** [Delivery Worker](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/NotificationDeliveryWorker.java) · [선점 Query](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/NotificationDeliveryRepository.java) · [PostgreSQL Test](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/test/java/com/sroyio/server/messenger/NotificationDeliveryPostgresTest.java)
+
 ## Problem
 
 알림 원본의 DB 저장과 WebSocket 전달은 실패 시점이 다릅니다. 저장 후 전송이 실패할 수 있고, 전송 직후 연결이 끊기면 성공 여부를 알 수 없습니다. 확인 없이 재시도하면 중복 전달 가능성이 있습니다.

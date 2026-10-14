@@ -1,5 +1,7 @@
 # Internal Mail
 
+**Source Code:** [발송 Transaction](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/mail/InternalMailService.java) · [저장소](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/mail/InternalMailRepository.java) · [PostgreSQL Test](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/test/java/com/sroyio/server/mail/InternalMailCorePostgresTest.java)
+
 ## Problem
 
 Sroyio 내부 메일은 메시지 한 행만 저장하면 발송이 끝나지 않습니다. 수신자의 Inbox Entry가 빠지면 부분 성공이 됩니다. 재시도 중복, BCC 노출, 필수 audit 누락, 발송 이후 알림 실패를 서로 다른 경계에서 다뤄야 합니다.

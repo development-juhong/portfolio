@@ -1,5 +1,7 @@
 # Collaboration
 
+**Source Code:** [Tab 삭제 흐름](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/ChannelTabService.java) · [Workflow 처리](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/WorkflowService.java) · [PostgreSQL 동시성 Test](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/test/java/com/sroyio/server/messenger/ChannelTabDeletePostgresTest.java)
+
 ## Problem
 
 채널 Tab은 Item, Workflow Rule과 연결되고 Rule에는 Run과 실행 기록이 이어집니다. Tab 선삭제는 FK 충돌이나 부분 정리를 만들 수 있습니다. 산출물·기록의 삭제와 복원에는 동시 요청의 덮어쓰기를 막을 변경 판정이 필요합니다.

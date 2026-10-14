@@ -1,5 +1,7 @@
 # Authentication & Permission
 
+**Source Code:** [세션 회전](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/auth/ClientAuthSessionService.java) · [WebSocket frame gate](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/WsFrameGate.java) · [PostgreSQL Test](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/test/java/com/sroyio/server/auth/ClientAuthSessionServicePgIntegrationTest.java)
+
 ## Problem
 
 로그인 뒤에도 refresh token 재사용, 로그아웃·강제 철회, 사용자 접근 상태 변경을 처리해야 합니다. WebSocket 연결은 오래 유지되므로 연결 시점의 권한 판정만으로 이후 입력 프레임을 신뢰할 수 없습니다.

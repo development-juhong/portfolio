@@ -1,5 +1,7 @@
 # Messenger
 
+**Source Code:** [처리 흐름](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/MessengerService.java) · [저장소와 중복 판정](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/main/java/com/sroyio/server/messenger/MessengerJdbcRepository.java) · [PostgreSQL 동시성 Test](https://github.com/development-juhong/sroyio/blob/main/Backend/sroyio-server/app/src/test/java/com/sroyio/server/messenger/MessengerConcurrencyPostgresTest.java)
+
 ## Problem
 
 네트워크 재시도와 중복 클릭으로 같은 전송 요청이 여러 번 도착할 수 있습니다. 사전 조회만으로 중복을 판단하면 동시 요청이 모두 미존재 상태를 읽을 수 있습니다. 방 참여자만 전송하고, 답글 부모 메시지는 같은 방에 있어야 합니다.
